@@ -12,3 +12,7 @@ from ctaDemo import DoubleEmaDemo
 
 STRATEGY_CLASS = {}
 STRATEGY_CLASS['DoubleEmaDemo'] = DoubleEmaDemo
+
+# XD
+from strategy import MultiSignalStrategy
+STRATEGY_CLASS['MultiSignalStrategy'] = MultiSignalStrategy
