@@ -1,6 +1,7 @@
 # encoding: UTF-8
 
 import psutil
+from datetime import datetime  # XD
 
 from uiBasicWidget import *
 from ctaAlgo.uiCtaWidget import CtaEngineManager
@@ -199,6 +200,12 @@ class MainWindow(QtGui.QMainWindow):
             self.sbCount = 0
             self.statusLabel.setText(self.getCpuMemory())
 
+        # XD
+        dt = datetime.now()
+        if dt.hour == 20 or dt.hour == 8:
+            if dt.minute == 55 and dt.second == 0:
+                self.connectCtp()
+
     #----------------------------------------------------------------------
     def getCpuMemory(self):
         """获取CPU和内存状态信息"""
@@ -382,7 +389,7 @@ class MainWindow(QtGui.QMainWindow):
         ctaM.showMaximized()
         ctaM.load()
         ctaM.initAll()
-        # ctaM.startAll()
+        ctaM.startAll()
 
 
 ########################################################################

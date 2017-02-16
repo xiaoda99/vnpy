@@ -308,12 +308,20 @@ class CtaEngine(object):
             posBuffer.updatePositionData(pos)
 
     #----------------------------------------------------------------------
+    # XD
+    def processAccountEvent(self, event):
+        self.account = event.dict_['data']
+        # assert isinstance(self.account, VtAccountData)
+        # print self.account.__dict__
+
+    #----------------------------------------------------------------------
     def registerEvent(self):
         """注册事件监听"""
         self.eventEngine.register(EVENT_TICK, self.processTickEvent)
         self.eventEngine.register(EVENT_ORDER, self.processOrderEvent)
         self.eventEngine.register(EVENT_TRADE, self.processTradeEvent)
         self.eventEngine.register(EVENT_POSITION, self.processPositionEvent)
+        self.eventEngine.register(EVENT_ACCOUNT, self.processAccountEvent)  #XD
 
     #----------------------------------------------------------------------
     def insertData(self, dbName, collectionName, data):

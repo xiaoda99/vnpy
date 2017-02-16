@@ -55,14 +55,14 @@ def main():
 
 # XD
 def check_error():
-    dirname = '/home/xd/projects/pivotrade'
+    dirname = '/home/xd/projects/pivotrader'
     return sum([os.path.getsize(os.path.join(dirname, name + '_error.out')) \
                for name in ['download', 'sc', 'youse', 'dc', 'zc']])
 
 
 if __name__ == '__main__':
     # XD
-    # if check_error() > 0:
-    #     exit(-1)
+    if check_error() > 0:
+        exit(-1)
 
     main()
