@@ -92,26 +92,33 @@ class CtpGateway(VtGateway):
 
     #----------------------------------------------------------------------
     def connect(self):
-        # XD
-        if self.mdConnected and self.tdConnected:
-            return
         """连接"""
         # 载入json文件
-        fileName = self.gatewayName + '_connect.json'
-        path = os.path.abspath(os.path.dirname(__file__))
-        fileName = os.path.join(path, fileName)
+        #XD
+        if self.mdConnected and self.tdConnected:
+            return
+        if not hasattr(self, 'setting'):
+            fileName = self.gatewayName + '_connect.json'
+            path = os.path.abspath(os.path.dirname(__file__))
+            fileName = os.path.join(path, fileName)
 
-        try:
-            f = file(fileName)
-        except IOError:
+            try:
+                f = file(fileName)
+            except IOError:
+                log = VtLogData()
+                log.gatewayName = self.gatewayName
+                log.logContent = u'读取连接配置出错，请检查'
+                self.onLog(log)
+                return
+
+            # 解析json文件
             log = VtLogData()
             log.gatewayName = self.gatewayName
-            log.logContent = u'读取连接配置出错，请检查'
+            log.logContent = u'读取连接配置从' + os.readlink(fileName)
+            self.setting = json.load(f)
+            f.close()
             self.onLog(log)
-            return
-
-        # 解析json文件
-        setting = json.load(f)
+        setting = self.setting
         try:
             userID = str(setting['userID'])
             password = str(setting['password'])

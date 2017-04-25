@@ -1,12 +1,15 @@
 # encoding: UTF-8
 
 import psutil
-from datetime import datetime  # XD
 
 from uiBasicWidget import *
 from ctaAlgo.uiCtaWidget import CtaEngineManager
 from dataRecorder.uiDrWidget import DrEngineManager
 from riskManager.uiRmWidget import RmEngineManager
+
+# XD
+from datetime import datetime
+from gm_utils import is_trading_day
 
 ########################################################################
 class MainWindow(QtGui.QMainWindow):
@@ -203,8 +206,10 @@ class MainWindow(QtGui.QMainWindow):
         # XD
         dt = datetime.now()
         if dt.hour == 20 or dt.hour == 8:
-            if dt.minute == 55 and dt.second == 0:
+            if dt.minute == 45 and dt.second <= 2:
                 self.connectCtp()
+        if dt.hour == 20 and dt.minute == 25 and is_trading_day(datetime.now()):
+            self.close()
 
     #----------------------------------------------------------------------
     def getCpuMemory(self):
@@ -327,11 +332,13 @@ class MainWindow(QtGui.QMainWindow):
     #----------------------------------------------------------------------
     def closeEvent(self, event):
         """关闭事件"""
-        reply = QtGui.QMessageBox.question(self, u'退出',
-                                           u'确认退出?', QtGui.QMessageBox.Yes |
-                                           QtGui.QMessageBox.No, QtGui.QMessageBox.No)
+        # XD
+        # reply = QtGui.QMessageBox.question(self, u'退出',
+        #                                    u'确认退出?', QtGui.QMessageBox.Yes |
+        #                                    QtGui.QMessageBox.No, QtGui.QMessageBox.No)
 
-        if reply == QtGui.QMessageBox.Yes:
+        # if reply == QtGui.QMessageBox.Yes:
+        if True:
             for widget in self.widgetDict.values():
                 widget.close()
             self.saveWindowSettings('custom')

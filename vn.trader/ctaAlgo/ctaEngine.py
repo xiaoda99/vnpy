@@ -386,7 +386,10 @@ class CtaEngine(object):
             from step import get_main_symbol
             symbol = get_main_symbol(name)
             setting['vtSymbol'] = symbol.split('.')[1]
-
+            if not hasattr(self, 'brokerName'):
+                self.brokerName = os.path.splitext(
+                    os.readlink('ctpGateway/CTP_connect.json'))[0].split('_')[-1]
+            setting['brokerName'] = self.brokerName
 
         # 获取策略类
         strategyClass = STRATEGY_CLASS.get(className, None)

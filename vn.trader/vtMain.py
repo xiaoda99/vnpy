@@ -9,6 +9,11 @@ import vtPath
 from vtEngine import MainEngine
 from uiMainWindow import *
 
+# XD
+from datetime import datetime
+from utils import data_dir, date2str
+from gm_utils import is_trading_day
+
 # 文件路径名
 path = os.path.abspath(os.path.dirname(__file__))
 ICON_FILENAME = 'vnpy.ico'
@@ -55,14 +60,26 @@ def main():
 
 # XD
 def check_error():
-    dirname = '/home/xd/projects/pivotrader'
-    return sum([os.path.getsize(os.path.join(dirname, name + '_error.out')) \
-               for name in ['download', 'sc', 'youse', 'dc', 'zc']])
+    dirname = '/home/xd/production/pivotrader'
+    return os.path.getsize(os.path.join(dirname, 'download' + '_error.out')) + \
+        sum([os.path.getsize(os.path.join(data_dir, name + '_error.out'))
+            for name in ['sc', 'youse', 'dc', 'zc']])
+
+
+def link(source, link_name):
+    if os.path.isfile(link_name):
+        assert os.path.islink(link_name)
+        os.unlink(link_name)
+    os.symlink(os.path.basename(source), link_name)
 
 
 if __name__ == '__main__':
     # XD
+    if not is_trading_day(datetime.now()):
+        print 'vtMain exit: not trading day.'
+        exit(0)
     if check_error() > 0:
+        print 'vtMain exit: step error.'
         exit(-1)
 
     main()
